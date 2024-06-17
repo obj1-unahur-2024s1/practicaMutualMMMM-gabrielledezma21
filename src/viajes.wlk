@@ -4,6 +4,8 @@ class Viaje{
 	var property implicaEsfuerzo
 	var property sirveParabroncearse
 	var property duracion
+		
+	method esInteresante() = idiomas.size() > 2
 	
 }
 
@@ -37,6 +39,9 @@ class ExcursionACiudad inherits Viaje{
 	
 	override method sirveParabroncearse()= false
 	
+	override method esInteresante(){
+		return super() or cantidadDeAtracciones == 5
+	}
 }
 
 class ExcursionACiudadTropcial inherits ExcursionACiudad{
@@ -65,4 +70,7 @@ class SalidaDeTrekking inherits Viaje{
 		return ( diasDeSolAnuales > 200 ) or ( diasDeSolAnuales.between(100,200) and kilometrosDeSenderos > 120 )
 	}
 	
+	override method esInteresante(){
+		return super() and diasDeSolAnuales > 140
+	}
 }
