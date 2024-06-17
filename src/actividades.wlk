@@ -1,9 +1,12 @@
-class Viaje{
+class Actividad {
 	
 	const property idiomas
 	var property implicaEsfuerzo
 	var property sirveParabroncearse
 	var property duracion
+}
+
+class Viaje inherits Actividad{
 		
 	method esInteresante() = idiomas.size() > 2
 	
@@ -73,4 +76,16 @@ class SalidaDeTrekking inherits Viaje{
 	override method esInteresante(){
 		return super() and diasDeSolAnuales > 140
 	}
+}
+
+class ClaseDeGimnasia inherits Actividad{
+	
+	override method idiomas() = ["español"]
+	
+	override method duracion() = 1
+	
+	override method implicaEsfuerzo() = true
+	
+	override method sirveParabroncearse() = false
+	
 }
