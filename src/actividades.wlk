@@ -7,12 +7,18 @@ class Actividad {
 	var property sirveParaBroncearse = false
 	var property duracion = 0
 	
+	method esRecomendada(socio) 
+	
 }
 
 class Viaje inherits Actividad{
 		
 	method esInteresante() = idiomas.size() > 1
 	
+	override method esRecomendada(socio){
+		
+		return self.esInteresante() and socio.leAtrae(self) and not socio.actividadesRealizadas().contains(self)
+	}
 }
 
 class DePlaya inherits Viaje{
@@ -80,4 +86,7 @@ class ClaseDeGimnasia inherits Actividad{
 		sirveParaBroncearse = false
 	}
 	
+	override method esRecomendada(socio){
+		return socio.edad().between(20,30)
+	}
 }

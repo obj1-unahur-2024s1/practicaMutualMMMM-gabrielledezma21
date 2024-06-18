@@ -195,3 +195,40 @@ test "le atrae"{
 	assert.that(r.leAtrae(viajeR))
 	assert.notThat(r.leAtrae(viajeR2))
 }
+
+//punto 6
+test "es recomendada"{
+	
+	//clases de gimnasia: el socio debe tener entre 20 y 30 años
+	const clase = new ClaseDeGimnasia()
+	
+	const socio1 = new Socio(actividadesRealizadas=[], maximoDeActividadesPermitidas=5, idiomasQueHabla=["español"], edad=35)
+	const socio2 = new Socio(actividadesRealizadas=[], maximoDeActividadesPermitidas=5, idiomasQueHabla=["español"], edad=25)
+	
+	assert.notThat(clase.esRecomendada(socio1))
+	assert.that(clase.esRecomendada(socio2))
+	
+	
+	// viaje tiene que ser interesante, le tiene que atraer al socio y  el socio no la debe haber realizado
+	const viaje = new DePlaya(idiomas=["español","inglés"],largo=3000)
+	const viaje2 = new DePlaya(idiomas=["inglés"],largo=3000)
+	
+	const soc1 = new Tranquilo(actividadesRealizadas=[], maximoDeActividadesPermitidas=5, idiomasQueHabla=["español"], edad=35)
+	
+	assert.that(viaje.esRecomendada(soc1))
+	
+	const soc2 = new Tranquilo(actividadesRealizadas=[], maximoDeActividadesPermitidas=5, idiomasQueHabla=["español"], edad=35)
+	
+	assert.notThat(viaje2.esRecomendada(soc2))
+	
+	const soc3 = new Relajado(actividadesRealizadas=[], maximoDeActividadesPermitidas=5, idiomasQueHabla=["español"], edad=35)
+	
+	assert.notThat(viaje2.esRecomendada(soc3))
+	
+	const soc4 = new Tranquilo(actividadesRealizadas=[viaje], maximoDeActividadesPermitidas=5, idiomasQueHabla=["español"], edad=35)
+	
+	assert.notThat(viaje.esRecomendada(soc4))
+	
+	
+	
+}

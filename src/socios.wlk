@@ -25,6 +25,7 @@ class Socio {
 	}
 	
 	method leAtrae(actividad)= false
+	
 }
 
 class Tranquilo inherits Socio{
