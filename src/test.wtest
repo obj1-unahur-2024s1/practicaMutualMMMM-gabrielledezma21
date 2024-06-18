@@ -1,0 +1,156 @@
+import actividades.*
+import socios.*
+
+//punto 1
+test "viajes de playa"{
+	var largoDePlaya = 4000
+	const dp = new DePlaya(idiomas=["latín","castellano"], largo=largoDePlaya)
+	
+	assert.equals(largoDePlaya / 500,dp.duracion())
+	assert.equals(largoDePlaya > 1200,dp.implicaEsfuerzo())
+	assert.that(dp.sirveParaBroncearse())
+}
+
+test "excursion a ciudad"{
+	const atraccionesAVisitar = 3
+	const e1 = new ExcursionACiudad(idiomas=["chino","inglés"], cantidadDeAtracciones=atraccionesAVisitar)
+	
+	assert.equals(atraccionesAVisitar / 2,e1.duracion())
+	assert.equals(atraccionesAVisitar.between(5,8),e1.implicaEsfuerzo())
+	assert.notThat(e1.sirveParaBroncearse())
+}
+
+test "excursiones ejemplo"{
+	//una excursión a ciudad normal (no tropical) en la que se visitan 4 atracciones, lleva 2 días, no implica esfuerzo, y no sirve para broncearse
+	const exc1 = new ExcursionACiudad(idiomas=["español","inglés"], cantidadDeAtracciones=4)
+	
+	assert.equals(2,exc1.duracion())
+	assert.notThat(exc1.implicaEsfuerzo())
+	assert.notThat(exc1.sirveParaBroncearse())
+	
+	//una excursión a ciudad tropical en la que se visitan 4 atracciones, lleva 3 días, no implica esfuerzo, y sí sirve para broncearse.
+	const exc2 = new ExcursionACiudadTropical(idiomas=["español","inglés"], cantidadDeAtracciones=4)
+	
+	assert.equals(3,exc2.duracion())
+	assert.notThat(exc2.implicaEsfuerzo())
+	assert.that(exc2.sirveParaBroncearse())
+	
+	//una excursión a ciudad normal (no tropical) en la que se visitan 8 atracciones, lleva 4 días, implica esfuerzo, y no sirve para broncearse
+	const exc3 = new ExcursionACiudad(idiomas=["español","inglés"], cantidadDeAtracciones=8)
+	
+	assert.equals(4,exc3.duracion())
+	assert.that(exc3.implicaEsfuerzo())
+	assert.notThat(exc3.sirveParaBroncearse())
+	
+	//una excursión a ciudad tropical en la que se visitan 8 atracciones, lleva 5 días, implica esfuerzo, y sirve para broncearse
+	const exc4 = new ExcursionACiudadTropical(idiomas=["español","inglés"], cantidadDeAtracciones=8)
+	
+	assert.equals(5,exc4.duracion())
+	assert.that(exc4.implicaEsfuerzo())
+	assert.that(exc4.sirveParaBroncearse())
+	
+	//una excursión a ciudad tropical en la que se visitan 10 atracciones, lleva 6 días, no implica esfuerzo, y sí sirve para broncearse
+	const exc5 = new ExcursionACiudadTropical(idiomas=["español","inglés"], cantidadDeAtracciones=10)
+	
+	assert.equals(6,exc5.duracion())
+	assert.notThat(exc5.implicaEsfuerzo())
+	assert.that(exc5.sirveParaBroncearse())
+
+}
+
+test"salida de trekking"{
+	const km = 25
+	const dias = 250
+	const s1 = new SalidaDeTrekking(idiomas=["chino","inglés"], kilometrosDeSenderos=km, diasDeSolAnuales=dias)
+	
+	assert.equals(km / 50,s1.duracion())
+	assert.equals(km > 80,s1.implicaEsfuerzo())
+	assert.equals(dias > 200 or (dias.between(100,200) and km > 120),s1.sirveParaBroncearse())
+}
+
+test "salidas de ejemplo"{
+	//una salida de 100 kilómetros a un lugar con 130 días de sol por año: lleva 2 días, implica esfuerzo, y no sirve para broncearse
+	const st1 = new SalidaDeTrekking(idiomas=["chino","inglés"], kilometrosDeSenderos=100, diasDeSolAnuales=130)
+	
+	assert.equals(2,st1.duracion())
+	assert.that(st1.implicaEsfuerzo())
+	assert.notThat(st1.sirveParaBroncearse())
+	
+	//una salida de 50 kilómetros a un lugar con 240 días de sol por año: lleva 1 día, no implica esfuerzo, y sí sirve para broncearse
+	const st2 = new SalidaDeTrekking(idiomas=["chino","inglés"], kilometrosDeSenderos=50, diasDeSolAnuales=240)
+	
+	assert.equals(1,st2.duracion())
+	assert.notThat(st2.implicaEsfuerzo())
+	assert.that(st2.sirveParaBroncearse())
+	
+	//una salida de 250 kilómetros a un lugar con 130 días de sol por año: lleva 5 días, implica esfuerzo, y sirve para broncearse
+	const st3 = new SalidaDeTrekking(idiomas=["chino","inglés"], kilometrosDeSenderos=250, diasDeSolAnuales=130)
+	
+	assert.equals(5,st3.duracion())
+	assert.that(st3.implicaEsfuerzo())
+	assert.that(st3.sirveParaBroncearse())
+}
+
+//punto 2
+test "un viaje es interesante si se usa más de un idioma"{
+	const v = new Viaje(idiomas=["quechua","aymara"])
+	assert.equals((v.idiomas().size() > 1), v.esInteresante())
+	
+	const dp = new DePlaya(idiomas=["quechua","aymara"], largo=1000)
+	assert.equals((dp.idiomas().size() > 1), dp.esInteresante())
+}
+
+test "una excursion a una ciudad es interesante si se usa más de un idioma o recorren 5 atracciones"{
+	const e = new ExcursionACiudad(idiomas=["francés","alemán", "húngaro"], cantidadDeAtracciones=5)
+	assert.equals(e.idiomas().size() > 1 or e.cantidadDeAtracciones() == 5, e.esInteresante())
+}
+
+test "una excursion a una ciudad tropical es interesante si se usa más de un idioma o recorren 5 atracciones"{
+	const et = new ExcursionACiudadTropical(idiomas=["español","inglés"], cantidadDeAtracciones=5)
+	assert.equals(et.idiomas().size() > 1 or et.cantidadDeAtracciones() == 5, et.esInteresante())
+}
+
+test"una salida de trekking es interesante si se usa más de un idioma y hay más de 140 dias de sol anuales"{
+	const s = new SalidaDeTrekking(idiomas=["chino","japonés","inglés","árabe"], kilometrosDeSenderos=0, diasDeSolAnuales=150)
+	assert.equals(s.idiomas().size() > 1 and s.diasDeSolAnuales() > 140, s.esInteresante())
+}
+
+//punto 3
+test "clases de gimnasia: idiomas únicamente español, dura 1 día, implica esfuerzo y no sirve para broncearse."{
+	const clase = new ClaseDeGimnasia()
+	
+	assert.equals(["español"], clase.idiomas())
+	assert.equals(1, clase.duracion())
+	assert.that(clase.implicaEsfuerzo())
+	assert.notThat(clase.sirveParaBroncearse())
+}
+
+//punto 4
+test "Roque hizo 2 viajes a la playa, con longitudes de 1000 y 2000 metros, y máximo de 2 actividades" {
+	
+	const viaje1 = new DePlaya(idiomas=["español","inglés"], largo =1000)
+	const viaje2 = new DePlaya(idiomas=["francés","chino"], largo =2000)
+	const roque = new Socio(actividadesRealizadas=[viaje1,viaje2],maximoDeActividadesPermitidas=2)
+
+	assert.that(roque.esAdoradorDelSol())
+	
+	assert.equals([viaje2],roque.actividadesEsforzadas())
+	
+	const clase1 = new ClaseDeGimnasia()
+		
+	assert.throwsExceptionWithMessage('Ya alcanzó el máximo de actividades permitidas', {roque.registrarActividad(clase1)})
+}
+
+test "Ana hizo 2 viajes iguales a Roque y máximo de 3 actividades"{
+	
+	const viaje1 = new DePlaya(idiomas=["español","inglés"], largo =1000)
+	const viaje2 = new DePlaya(idiomas=["francés","chino"], largo =2000)
+	const clase1 = new ClaseDeGimnasia()
+	const ana = new Socio(actividadesRealizadas=[viaje1,viaje2],maximoDeActividadesPermitidas=3)
+		
+	assert.doesNotThrowException({ana.registrarActividad(clase1)})
+	
+	assert.notThat(ana.esAdoradorDelSol())
+	
+	assert.equals([viaje2,clase1],ana.actividadesEsforzadas())
+}

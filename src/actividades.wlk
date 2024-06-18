@@ -1,30 +1,30 @@
+import socios.*
+
 class Actividad {
 	
-	const property idiomas
-	var property implicaEsfuerzo
-	var property sirveParabroncearse
-	var property duracion
+	var property idiomas = []
+	var property implicaEsfuerzo = false
+	var property sirveParaBroncearse = false
+	var property duracion = 0
+	
 }
 
 class Viaje inherits Actividad{
 		
-	method esInteresante() = idiomas.size() > 2
+	method esInteresante() = idiomas.size() > 1
 	
 }
 
 class DePlaya inherits Viaje{
 	
-	const property largo
+	var property largo
 	
-	override method duracion(){
-		return largo / 500
+	override method initialize(){
+		super()
+		duracion = largo / 500
+		implicaEsfuerzo = largo > 1200
+		sirveParaBroncearse = true
 	}
-	
-	override method implicaEsfuerzo(){
-		return largo > 1200
-	}
-	
-	override method sirveParabroncearse()= true
 		
 }
 
@@ -32,28 +32,26 @@ class ExcursionACiudad inherits Viaje{
 	
 	var property cantidadDeAtracciones
 	
-	override method duracion(){
-		return cantidadDeAtracciones / 2
+	override method initialize(){
+		duracion = cantidadDeAtracciones / 2
+		implicaEsfuerzo = cantidadDeAtracciones.between(5,8)
+		sirveParaBroncearse = false
 	}
-	
-	override method implicaEsfuerzo(){
-		return cantidadDeAtracciones.between(5,8)
-	}
-	
-	override method sirveParabroncearse()= false
 	
 	override method esInteresante(){
 		return super() or cantidadDeAtracciones == 5
 	}
+	
 }
 
-class ExcursionACiudadTropcial inherits ExcursionACiudad{
+class ExcursionACiudadTropical inherits ExcursionACiudad{
 	
-	override method duracion(){
-		return super() + 1
+	override method initialize(){
+		super()
+		duracion += 1
+		sirveParaBroncearse = true
 	}
 	
-	override method sirveParabroncearse()= true
 }
 
 class SalidaDeTrekking inherits Viaje{
@@ -61,16 +59,11 @@ class SalidaDeTrekking inherits Viaje{
 	var property kilometrosDeSenderos
 	var property diasDeSolAnuales
 	
-	override method duracion(){
-		return kilometrosDeSenderos / 50
-	}
 	
-	override method implicaEsfuerzo(){
-		return kilometrosDeSenderos > 80
-	}
-	
-	override method sirveParabroncearse(){
-		return ( diasDeSolAnuales > 200 ) or ( diasDeSolAnuales.between(100,200) and kilometrosDeSenderos > 120 )
+	override method initialize(){
+		duracion = kilometrosDeSenderos / 50
+		implicaEsfuerzo = kilometrosDeSenderos > 80
+		sirveParaBroncearse = ( diasDeSolAnuales > 200 ) or ( diasDeSolAnuales.between(100,200) and kilometrosDeSenderos > 120 )
 	}
 	
 	override method esInteresante(){
@@ -80,12 +73,11 @@ class SalidaDeTrekking inherits Viaje{
 
 class ClaseDeGimnasia inherits Actividad{
 	
-	override method idiomas() = ["español"]
-	
-	override method duracion() = 1
-	
-	override method implicaEsfuerzo() = true
-	
-	override method sirveParabroncearse() = false
+	override method initialize(){
+		idiomas = ["español"]
+		duracion = 1
+		implicaEsfuerzo = true
+		sirveParaBroncearse = false
+	}
 	
 }
