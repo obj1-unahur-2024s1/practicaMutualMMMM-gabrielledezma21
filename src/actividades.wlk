@@ -90,3 +90,27 @@ class ClaseDeGimnasia inherits Actividad{
 		return socio.edad().between(20,30)
 	}
 }
+
+class TallerLiterario inherits Actividad{
+	
+	var property libros = []
+	
+	
+	override method initialize(){
+		idiomas = libros.map({libro => libro.idioma()}).asSet().asList()
+		duracion = libros.size() + 1
+		var autores = libros.map({libro => libro.nombreAutor()}).asSet().asList()
+		implicaEsfuerzo = libros.any({libro => libro.cantPaginas() > 500}) or (autores.size()==1 and libros.all({libro => autores.contains( libro.nombreAutor() ) }) ) and libros.size() > 1
+		sirveParaBroncearse = false
+	}
+	
+	override method esRecomendada(socio){
+		return socio.idiomasQueHabla().size() > 1
+	}
+}
+
+class Libro{
+	var property idioma
+	var property cantPaginas 
+	var property nombreAutor
+}

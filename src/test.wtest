@@ -3,7 +3,7 @@ import socios.*
 
 //punto 1
 test "viajes de playa"{
-	var largoDePlaya = 4000
+	const largoDePlaya = 4000
 	const dp = new DePlaya(idiomas=["latín","castellano"], largo=largoDePlaya)
 	
 	assert.equals(largoDePlaya / 500,dp.duracion())
@@ -228,7 +228,31 @@ test "es recomendada"{
 	const soc4 = new Tranquilo(actividadesRealizadas=[viaje], maximoDeActividadesPermitidas=5, idiomasQueHabla=["español"], edad=35)
 	
 	assert.notThat(viaje.esRecomendada(soc4))
+}
+
+// Bonus: taller literario
+test "taller literario"{
+	const libro1 = new Libro(idioma="español", cantPaginas = 10, nombreAutor="Pepito")
+	const libro2 = new Libro(idioma="español", cantPaginas = 2000, nombreAutor="Pepito")
+	const libro3 = new Libro(idioma="inglés", cantPaginas = 100, nombreAutor="Jose")
+	const libro4 = new Libro(idioma="inglés", cantPaginas = 80, nombreAutor="Jose")
+	const taller1 = new TallerLiterario(libros=[libro1,libro2])	
+	const taller2 = new TallerLiterario(libros=[libro3,libro4])
+	const taller3 = new TallerLiterario(libros=[libro3])
 	
+	assert.equals(["español"],taller1.idiomas())
 	
+	assert.equals(3,taller1.duracion())
 	
+	assert.that(taller1.implicaEsfuerzo())
+	
+	assert.that(taller2.implicaEsfuerzo())
+	
+	assert.notThat(taller3.implicaEsfuerzo())
+	
+	assert.notThat(taller1.sirveParaBroncearse())
+	
+	const socio = new Tranquilo(actividadesRealizadas=[], maximoDeActividadesPermitidas=5, idiomasQueHabla=["español","chino"], edad=35)
+	
+	assert.that(taller1.esRecomendada(socio))
 }
