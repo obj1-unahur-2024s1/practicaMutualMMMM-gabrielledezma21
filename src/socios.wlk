@@ -1,8 +1,10 @@
 import actividades.*
 
 class Socio {
-	var actividadesRealizadas
+	var property actividadesRealizadas
 	var property maximoDeActividadesPermitidas
+	var property edad = 0
+	var property idiomasQueHabla = []
 	
 	method actividadesRealizadas() = actividadesRealizadas
 	
@@ -21,4 +23,29 @@ class Socio {
 			self.error("Ya alcanzó el máximo de actividades permitidas")
 		}
 	}
+	
+	method leAtrae(actividad)= false
+}
+
+class Tranquilo inherits Socio{
+	
+	override method leAtrae(actividad){
+		return actividad.duracion() >= 4
+	}
+}
+
+class Coherente inherits Socio{
+	
+	override method leAtrae(actividad){
+		return self.esAdoradorDelSol() or actividad.implicaEsfuerzo()
+	}
+}
+
+class Relajado inherits Socio{
+	
+	override method leAtrae(actividad){
+		return actividad.idiomas().any({idiomaX => self.idiomasQueHabla().contains(idiomaX)})
+		
+	}
+	
 }

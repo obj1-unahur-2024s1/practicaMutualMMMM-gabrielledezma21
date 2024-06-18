@@ -154,3 +154,44 @@ test "Ana hizo 2 viajes iguales a Roque y máximo de 3 actividades"{
 	
 	assert.equals([viaje2,clase1],ana.actividadesEsforzadas())
 }
+
+//punto 5
+test "le atrae"{
+	
+	//socio tranquilo, la actividad debe durar 4 días o más
+	
+	//1 dia de duracion
+	const clase = new ClaseDeGimnasia()
+	//5 dia de duracion
+	const st = new SalidaDeTrekking(idiomas=["chino","inglés"], kilometrosDeSenderos=250, diasDeSolAnuales=130)
+	const t = new Tranquilo(actividadesRealizadas=[], maximoDeActividadesPermitidas=1, idiomasQueHabla=["español"], edad=25)
+	assert.equals(st.duracion()>=4,t.leAtrae(st))
+	assert.equals(clase.duracion()>=4,t.leAtrae(clase))
+	assert.that(t.leAtrae(st))
+	assert.notThat(t.leAtrae(clase))
+	
+	//socio coherente 
+	
+	//adorador del sol
+	const viajeCoh = new DePlaya(idiomas=["español","inglés"], largo =1000)
+	const cSol = new Coherente(actividadesRealizadas=[viajeCoh], maximoDeActividadesPermitidas=5, idiomasQueHabla=["español"], edad=35)
+	
+	assert.equals(viajeCoh.sirveParaBroncearse(),cSol.leAtrae(viajeCoh))
+	assert.equals(cSol.esAdoradorDelSol(),cSol.leAtrae(viajeCoh))
+	assert.that(cSol.leAtrae(viajeCoh))
+	
+	//debe implicar esfuerzo
+	const viajeEsf = new ExcursionACiudad(idiomas=["español","inglés"], cantidadDeAtracciones = 6)
+	const cEsf = new Coherente(actividadesRealizadas=[viajeEsf], maximoDeActividadesPermitidas=5, idiomasQueHabla=["español"], edad=35)
+	
+	assert.equals(viajeEsf.implicaEsfuerzo(),cEsf.leAtrae(viajeEsf))
+	assert.that(cEsf.leAtrae(viajeEsf))
+	
+	//si un socio relajado habla español y quechua, entonces una actividad en español le va a atraer, una en quechua y aymará también, una en francés e italiano no.
+	const viajeR = new DePlaya(idiomas=["quechua","aymara"], largo =1000)
+	const viajeR2 = new DePlaya(idiomas=["francés","italiano"], largo =2000)
+	const r = new Relajado(actividadesRealizadas=[], maximoDeActividadesPermitidas=5, idiomasQueHabla=["español","quechua"], edad=30)
+	assert.that(r.leAtrae(clase))
+	assert.that(r.leAtrae(viajeR))
+	assert.notThat(r.leAtrae(viajeR2))
+}
